@@ -1,0 +1,31 @@
+.header {
+   width: 880px;
+   margin: 0 auto;
+   padding-top: 45px;
+}
+
+.header:after {
+   content: "";
+   display: block;
+   border: 0;
+   border-bottom: 1px solid #545454;
+   opacity: 0.7;
+   padding-top: 41px;
+   box-sizing: border-box;
+}
+
+@media screen and (max-width: 940px) {
+   .header {
+      width: 100%;
+   }
+}
+
+@media screen and (max-width: 425px) {
+   .header {
+      margin: 0 auto;
+   }
+
+   .header:after {
+      padding-top: 28px;
+   }
+}
