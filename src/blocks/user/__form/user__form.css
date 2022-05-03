@@ -1,0 +1,15 @@
+.user__form {
+    max-width: 358px;
+}
+
+@media screen and (max-width: 868px) {
+    .user__form {
+        max-width: 280px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .user__form {
+        max-width: 258px;
+    }
+}

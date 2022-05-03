@@ -1,0 +1,25 @@
+.user__save-submit {
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    border: none;
+    background-color: #fff;
+    border-radius: 2px;
+    padding:14px 0 14px ;
+    margin-top: 187px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.user__save-submit:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 425px) {
+    .user__save-submit {
+        font-size: 14px;
+        line-height: 17px;
+        margin-top: 143px;
+    }
+}

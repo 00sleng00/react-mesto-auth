@@ -1,0 +1,11 @@
+.popup__profile_tooltip {
+  margin: 23px auto 0;
+  color: #000000;
+}
+@media screen and (max-width: 760px) {
+  .popup__profile_tooltip {
+    margin: 40px auto 0;
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

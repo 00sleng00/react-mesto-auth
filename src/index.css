@@ -1,8 +1,14 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/font.css);
 @import url(./blocks/page/page.css);
+
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__flex/header__flex.css);
+@import url(./blocks/header/__email/header__email.css);
+@import url(./blocks/header/__exit-button/header__exit-button.css);
+
 @import url(./blocks/content/content.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__avatar/profile__avatar.css);
@@ -25,10 +31,14 @@
 @import url(./blocks/card/__delete/_hidden/card__delete_hidden.css);
 @import url(./blocks/card/__element-container/card__element-container.css);
 @import url(./blocks/card/__like-count/card__like-count.css);
+
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
+
 @import url(./blocks/popup/popup.css);
 @import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__container/__container_tooltip/popup__container_tooltip.css);
+
 @import url(./blocks/popup/__close/popup__close.css);
 @import url(./blocks/popup/__field/popup__field.css);
 @import url(./blocks/popup/__field/_card/popup__field_card_name.css);
@@ -36,6 +46,7 @@
 @import url(./blocks/popup/__field/_input/popup__field_input_name.css);
 @import url(./blocks/popup/__field/_input/popup__field_input_job.css);
 @import url(./blocks/popup/__field/_input/_tape/popup__field_input_type_error.css);
+
 @import url(./blocks/popup/__form/popup__form.css);
 @import url(./blocks/popup/__heading/popup__heading.css);
 @import url(./blocks/popup/__input-container/popup__input-container.css);
@@ -51,6 +62,18 @@
 @import url(./blocks/popup/__photo-caption/popup__photo-caption.css);
 @import url(./blocks/popup/__photo-img/popup__photo-img.css);
 @import url(./blocks/popup/_type_delete-confirm/popup_type_delete-confirm.css);
+
+@import url(blocks/popup/__profile_tooltip/popup__profile_tooltip.css);
+
+
+
+@import url(./blocks/user/user.css);
+@import url(./blocks/user/__form/user__form.css);
+@import url(./blocks/user/__title/user__title.css);
+@import url(./blocks/user/__input/user__input.css);
+@import url(./blocks/user/__save-submit/user__save-submit.css);
+@import url(./blocks/user/__sign-in/user__sign-in.css);
+@import url(./blocks/user/__link/user__link.css);
 
 
 

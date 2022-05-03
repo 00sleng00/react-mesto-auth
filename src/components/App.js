@@ -9,8 +9,17 @@ import AddPlacePopup from "./AddPlacePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import * as auth from "../utils/auth";
+import { setToken, getToken, removeToken } from "../utils/token";
+import InfoTooltip from "./InfoTooltip";
 
-function App() {
+
+
+const App = () => {
 
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -18,6 +27,80 @@ function App() {
     const [selectedCard, setSelectedCard] = React.useState({});
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
+
+    const [isTooltipPopupOpen, setTooltipPopup] = React.useState(false);
+    const [onInfoTooltip, setOnInfoTooltip] = React.useState({});
+    const [isLogin, setIsLogin] = React.useState(false);
+    const [data, setData] = React.useState({
+        email: "",
+        password: "",
+    });
+
+    const history = useHistory();
+
+    const signOut = () => {
+        removeToken();
+        setData({
+            email: "",
+            password: "",
+        });
+        setIsLogin(false);
+        history.push("/sign-in");
+    };
+
+    const handleRegister = (email, password) => {
+        auth.register(email, password)
+            .then(() => {
+                setTooltipPopup(true);
+                setOnInfoTooltip(true);
+                history.push("/sign-in");
+            })
+            .catch((res) => {
+                console.log(res);
+                setTooltipPopup(true);
+                setOnInfoTooltip(false);
+            });
+    };
+
+    const handleLogin = (email, password) => {
+        auth.authorize(email, password)
+            .then((data) => {
+                setToken(data.token);
+                setData({
+                    email: data.email,
+                });
+                setIsLogin(true);
+                history.replace({ pathname: "/" });
+            })
+            .catch((res) => {
+                console.log(res);
+                setTooltipPopup(true);
+                setOnInfoTooltip(false);
+            });
+    };
+
+    React.useEffect(() => {
+        const tokenCheck = () => {
+            const jwt = getToken();
+            if (jwt) {
+                auth.getContent(jwt)
+                    .then((res) => {
+                        if (res && res.data.email) {
+                            setData({
+                                email: res.data.email,
+                            });
+                            setIsLogin(true);
+                            history.push("/");
+                        } else {
+                            history.push("/sign-in");
+                        }
+                    })
+                    .catch((err) => console.error(err));
+            }
+        };
+        tokenCheck();
+    }, [history, isLogin]);
+
 
 
     function handleCardClick(card) {
@@ -41,6 +124,7 @@ function App() {
         setIsAddPlacePopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setSelectedCard({});
+        setTooltipPopup(false);
     }
 
 
@@ -108,8 +192,8 @@ function App() {
                 })
                 .catch((err) => console.log(`Ошибка: ${err}`));
         }
-        handleUserInfo();
-    }, []);
+        isLogin && handleUserInfo();
+    }, [isLogin]);
 
     React.useEffect(() => {
         function initialCards() {
@@ -119,25 +203,58 @@ function App() {
                 })
                 .catch((err) => console.log(`Ошибка: ${err}`));
         }
-        initialCards();
-    }, []);
+        isLogin && initialCards();
+    }, [isLogin]);
 
 
     return (
         <div className="page">
             <CurrentUserContext.Provider value={currentUser}>
-                <Header />
-                <Main
-                    onEditProfile={handleEditProfileClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onCardClick={handleCardClick}
-                    cards={cards}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}
+                <Header
+                    signOut={signOut}
+                    loggedIn={isLogin}
+                    email={data.email}
                 />
 
-                <Footer />
+                <Switch>
+                    <ProtectedRoute
+                        onEditProfile={handleEditProfileClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onAddPlace={handleAddPlaceClick}
+                        onCardClick={handleCardClick}
+                        cards={cards}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleCardDelete}
+
+                        component={Main}
+                        loggedIn={isLogin}
+                        exact
+                        path="/"
+                    />
+                    <Route path="/sign-in">
+                        <Login handleLogin={handleLogin} />
+                    </Route>
+
+                    <Route path="/sign-up">
+                        <Register handleRegister={handleRegister} />
+                    </Route>
+
+                    <Route>
+                        {isLogin ? (
+                            <Redirect to="/" />
+                        ) : (
+                            <Redirect to="/sign-in" />
+                        )}
+                    </Route>
+                </Switch>
+
+                {isLogin && <Footer />}
+
+                <InfoTooltip
+                    isOpen={isTooltipPopupOpen}
+                    onClose={closeAllPopups}
+                    onInfoTooltip={onInfoTooltip}
+                />
 
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
@@ -161,5 +278,5 @@ function App() {
             </CurrentUserContext.Provider>
         </div>
     );
-}
+};
 export default App;
